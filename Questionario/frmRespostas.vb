@@ -13,6 +13,7 @@ FROM tblQuestoes INNER JOIN ((tblGrupoQuestoes INNER JOIN rrQuestionarioGrupo ON
          WHERE rrQuestionarioGrupo.ID_Questionario=" & Val(Trim(lblIDQuestionario.Text)) & ""
 
         prepall()
+
         lblIDHoldEnquete.Text = ""
         Me.UcSaySomething1.tbName = "tblPessoas"
         Me.UcSaySomething1.pkField = "ID"
