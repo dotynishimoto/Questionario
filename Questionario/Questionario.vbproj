@@ -73,23 +73,53 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grupos.Designer.vb">
-      <DependentUpon>Grupos.vb</DependentUpon>
+    <Compile Include="frmFiltro.Designer.vb">
+      <DependentUpon>frmFiltro.vb</DependentUpon>
     </Compile>
-    <Compile Include="Grupos.vb">
+    <Compile Include="frmFiltro.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Perguntas.Designer.vb">
-      <DependentUpon>Perguntas.vb</DependentUpon>
+    <Compile Include="frmPessoas.Designer.vb">
+      <DependentUpon>frmPessoas.vb</DependentUpon>
     </Compile>
-    <Compile Include="Perguntas.vb">
+    <Compile Include="frmPessoas.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Questionario.vb">
+    <Compile Include="frmGrupos.Designer.vb">
+      <DependentUpon>frmGrupos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGrupos.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Questionario.Designer.vb">
-      <DependentUpon>Questionario.vb</DependentUpon>
+    <Compile Include="frmPerguntas.Designer.vb">
+      <DependentUpon>frmPerguntas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPerguntas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmStart.Designer.vb">
+      <DependentUpon>frmStart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmStart.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainForm.Designer.vb">
+      <DependentUpon>mainForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddEditQuestionario.Designer.vb">
+      <DependentUpon>frmAddEditQuestionario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddEditQuestionario.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRespostas.Designer.vb">
+      <DependentUpon>frmRespostas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRespostas.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Trick.vb" />
@@ -108,22 +138,55 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ucList.Designer.vb">
+      <DependentUpon>ucList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ucList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl1.Designer.vb">
+      <DependentUpon>UserControl1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl1.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Grupos.resx">
-      <DependentUpon>Grupos.vb</DependentUpon>
+    <EmbeddedResource Include="frmFiltro.resx">
+      <DependentUpon>frmFiltro.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Perguntas.resx">
-      <DependentUpon>Perguntas.vb</DependentUpon>
+    <EmbeddedResource Include="frmPessoas.resx">
+      <DependentUpon>frmPessoas.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Questionario.resx">
-      <DependentUpon>Questionario.vb</DependentUpon>
+    <EmbeddedResource Include="frmGrupos.resx">
+      <DependentUpon>frmGrupos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPerguntas.resx">
+      <DependentUpon>frmPerguntas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmStart.resx">
+      <DependentUpon>frmStart.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainForm.resx">
+      <DependentUpon>mainForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddEditQuestionario.resx">
+      <DependentUpon>frmAddEditQuestionario.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRespostas.resx">
+      <DependentUpon>frmRespostas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucList.resx">
+      <DependentUpon>ucList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl1.resx">
+      <DependentUpon>UserControl1.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿Public Class Grupos
+﻿Public Class frmGrupos
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Hide()
     End Sub
@@ -9,7 +9,6 @@
         Dim sErro As String = ""
         Dim retVal As Boolean
 
-
         retVal = getRS(s, rs, False, sErro)
         If retVal Then
             rs.AddNew()
@@ -17,6 +16,8 @@
             rs.Update()
             lblID.Text = rs.Fields("ID").Value
             rs.Close()
+        Else
+            MsgBox("Error while opening Recordset.")
 
         End If
 
@@ -29,15 +30,19 @@
             rs.Fields("Ordem").Value = txtOrdem.Text
             rs.Update()
             rs.Close()
+        Else
+            MsgBox("Error while opening Recordset.")
 
         End If
 
 
 
         rs = Nothing
-
+        mainForm.prePall()
         Me.Hide()
 
 
     End Sub
+
+
 End Class

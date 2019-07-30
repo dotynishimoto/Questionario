@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Perguntas
+Partial Class frmPerguntas
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -31,7 +31,6 @@ Partial Class Perguntas
         Me.txtRangeMin = New System.Windows.Forms.TextBox()
         Me.txtRangeMax = New System.Windows.Forms.TextBox()
         Me.txtRespostas = New System.Windows.Forms.TextBox()
-        Me.txtTipo = New System.Windows.Forms.TextBox()
         Me.lblQuestao = New System.Windows.Forms.Label()
         Me.lblTipo = New System.Windows.Forms.Label()
         Me.lblRespostas = New System.Windows.Forms.Label()
@@ -41,6 +40,10 @@ Partial Class Perguntas
         Me.lblIDGrupo = New System.Windows.Forms.Label()
         Me.lblIDOrdem = New System.Windows.Forms.Label()
         Me.lblIDHold = New System.Windows.Forms.Label()
+        Me.comboTipo = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblIDPergunta
@@ -92,21 +95,21 @@ Partial Class Perguntas
         '
         'txtStep
         '
-        Me.txtStep.Location = New System.Drawing.Point(118, 231)
+        Me.txtStep.Location = New System.Drawing.Point(118, 240)
         Me.txtStep.Name = "txtStep"
         Me.txtStep.Size = New System.Drawing.Size(58, 22)
         Me.txtStep.TabIndex = 18
         '
         'txtRangeMin
         '
-        Me.txtRangeMin.Location = New System.Drawing.Point(118, 192)
+        Me.txtRangeMin.Location = New System.Drawing.Point(118, 201)
         Me.txtRangeMin.Name = "txtRangeMin"
         Me.txtRangeMin.Size = New System.Drawing.Size(58, 22)
         Me.txtRangeMin.TabIndex = 19
         '
         'txtRangeMax
         '
-        Me.txtRangeMax.Location = New System.Drawing.Point(118, 153)
+        Me.txtRangeMax.Location = New System.Drawing.Point(118, 162)
         Me.txtRangeMax.Name = "txtRangeMax"
         Me.txtRangeMax.Size = New System.Drawing.Size(58, 22)
         Me.txtRangeMax.TabIndex = 20
@@ -117,13 +120,6 @@ Partial Class Perguntas
         Me.txtRespostas.Name = "txtRespostas"
         Me.txtRespostas.Size = New System.Drawing.Size(460, 22)
         Me.txtRespostas.TabIndex = 21
-        '
-        'txtTipo
-        '
-        Me.txtTipo.Location = New System.Drawing.Point(118, 75)
-        Me.txtTipo.Name = "txtTipo"
-        Me.txtTipo.Size = New System.Drawing.Size(58, 22)
-        Me.txtTipo.TabIndex = 22
         '
         'lblQuestao
         '
@@ -155,7 +151,7 @@ Partial Class Perguntas
         'lblRangeMax
         '
         Me.lblRangeMax.AutoSize = True
-        Me.lblRangeMax.Location = New System.Drawing.Point(15, 156)
+        Me.lblRangeMax.Location = New System.Drawing.Point(15, 165)
         Me.lblRangeMax.Name = "lblRangeMax"
         Me.lblRangeMax.Size = New System.Drawing.Size(75, 17)
         Me.lblRangeMax.TabIndex = 26
@@ -164,7 +160,7 @@ Partial Class Perguntas
         'lblRangeMin
         '
         Me.lblRangeMin.AutoSize = True
-        Me.lblRangeMin.Location = New System.Drawing.Point(15, 197)
+        Me.lblRangeMin.Location = New System.Drawing.Point(15, 206)
         Me.lblRangeMin.Name = "lblRangeMin"
         Me.lblRangeMin.Size = New System.Drawing.Size(72, 17)
         Me.lblRangeMin.TabIndex = 27
@@ -173,7 +169,7 @@ Partial Class Perguntas
         'lblStep
         '
         Me.lblStep.AutoSize = True
-        Me.lblStep.Location = New System.Drawing.Point(15, 237)
+        Me.lblStep.Location = New System.Drawing.Point(15, 246)
         Me.lblStep.Name = "lblStep"
         Me.lblStep.Size = New System.Drawing.Size(37, 17)
         Me.lblStep.TabIndex = 28
@@ -209,11 +205,54 @@ Partial Class Perguntas
         Me.lblIDHold.Text = "lblIDHold"
         Me.lblIDHold.Visible = False
         '
-        'Perguntas
+        'comboTipo
+        '
+        Me.comboTipo.AutoCompleteCustomSource.AddRange(New String() {"o", "m", "t", "i", "n", "d"})
+        Me.comboTipo.FormattingEnabled = True
+        Me.comboTipo.Items.AddRange(New Object() {"o", "m", "t", "i", "n", "d"})
+        Me.comboTipo.Location = New System.Drawing.Point(118, 75)
+        Me.comboTipo.Name = "comboTipo"
+        Me.comboTipo.Size = New System.Drawing.Size(121, 24)
+        Me.comboTipo.TabIndex = 32
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(245, 61)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(285, 17)
+        Me.Label1.TabIndex = 33
+        Me.Label1.Text = "O: Opcao; M: Multipla Opcao;T: Texto Livre;" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(245, 82)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(302, 17)
+        Me.Label2.TabIndex = 34
+        Me.Label2.Text = "I: Numero Inteiro; N: Numero Decimal; D: Data;"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(115, 139)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(462, 17)
+        Me.Label3.TabIndex = 35
+        Me.Label3.Text = "Separar cada alternativa com "";"". Ex: Muito bom; Bom; Ruim; Muito Ruim"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'frmPerguntas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(619, 340)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.comboTipo)
         Me.Controls.Add(Me.lblIDHold)
         Me.Controls.Add(Me.lblIDOrdem)
         Me.Controls.Add(Me.lblIDGrupo)
@@ -223,7 +262,6 @@ Partial Class Perguntas
         Me.Controls.Add(Me.lblRespostas)
         Me.Controls.Add(Me.lblTipo)
         Me.Controls.Add(Me.lblQuestao)
-        Me.Controls.Add(Me.txtTipo)
         Me.Controls.Add(Me.txtRespostas)
         Me.Controls.Add(Me.txtRangeMax)
         Me.Controls.Add(Me.txtRangeMin)
@@ -234,7 +272,7 @@ Partial Class Perguntas
         Me.Controls.Add(Me.btnPrepall)
         Me.Controls.Add(Me.lblIDPergunta)
         Me.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.Name = "Perguntas"
+        Me.Name = "frmPerguntas"
         Me.Text = "Perguntas"
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -250,7 +288,6 @@ Partial Class Perguntas
     Friend WithEvents txtRangeMin As TextBox
     Friend WithEvents txtRangeMax As TextBox
     Friend WithEvents txtRespostas As TextBox
-    Friend WithEvents txtTipo As TextBox
     Friend WithEvents lblQuestao As Label
     Friend WithEvents lblTipo As Label
     Friend WithEvents lblRespostas As Label
@@ -260,4 +297,8 @@ Partial Class Perguntas
     Friend WithEvents lblIDGrupo As Label
     Friend WithEvents lblIDOrdem As Label
     Friend WithEvents lblIDHold As Label
+    Friend WithEvents comboTipo As ComboBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label3 As Label
 End Class
