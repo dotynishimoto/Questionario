@@ -415,6 +415,10 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("TableTeste.pdf", FileMode.Create))
 
         Document.Open()
+        'SETTING DATE
+        Dim datee As String
+        datee = "Today's date is: " & Date.Now
+        Document.Add(New Paragraph(datee))
         'font
         Dim pTitle As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK)
         Dim pHeader As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLDITALIC, BaseColor.BLACK)
@@ -467,14 +471,51 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
                 Table.AddCell(pdfCell)
             Next
         Next
+        'TESTE
+        Dim intTblWidth() As Integer = {20, 20, 20, 50, 50, 35}
+        Table.SetWidths(intTblWidth)
+        Table.WidthPercentage = 50
+
 
         Document.Add(Table)
-
+        ' ADD CHART to PDF
         Dim chartimage As New MemoryStream()
         Chart1.SaveImage(chartimage, ChartImageFormat.Png)
         Dim Chart_Image As iTextSharp.text.Image = iTextSharp.text.Image.GetInstance(chartimage.GetBuffer())
         Chart_Image.ScalePercent(100.0F)
 
+        ' Document.Add(Chart_Image)
+
+
+        'ADD SECOND TABLE
+        Dim Table2 As New PdfPTable(gridQuestionario.Columns.Count)
+        Dim widths2(0 To gridQuestionario.Columns.Count - 1) As Single
+        For i As Integer = 0 To gridQuestionario.Columns.Count - 1
+            widths2(i) = 1.0F
+        Next
+        Table2.SetWidths(widths2)
+        Table2.HorizontalAlignment = 0
+        Table2.SpacingBefore = 5.0F
+
+        For i As Integer = 0 To Me.gridQuestionario.Columns.Count - 1
+            pdfCell = New PdfPCell(New Phrase(New Chunk(Me.gridQuestionario.Columns(i).HeaderText, pHeader)))
+            pdfCell.HorizontalAlignment = PdfPCell.ALIGN_LEFT
+            Table2.AddCell(pdfCell)
+        Next
+        For i As Integer = 0 To gridQuestionario.Rows.Count - 2
+            For j As Integer = 0 To Me.gridQuestionario.Columns.Count - 1
+
+                pdfCell = New PdfPCell(New Phrase(gridQuestionario(j, i).FormattedValue.ToString(), pTable))
+                Table2.HorizontalAlignment = PdfPCell.ALIGN_CENTER
+                Table2.AddCell(pdfCell)
+            Next
+        Next
+
+        ' Table2.WidthPercentage = 50
+
+
+
+        Document.Add(Table2)
         Document.Add(Chart_Image)
         Document.Close()
         pdfWrite.Close()
