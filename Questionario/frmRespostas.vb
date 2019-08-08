@@ -202,7 +202,7 @@ FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteResp
             MsgBox("Error while opening Recordset.")
         End If
     End Sub
-    Private Sub checkResposta()
+    Function checkResposta()
         comboOpcao.Text = String.Empty
         txtRespostaTexto.Clear()
         txtRespostaNum.Clear()
@@ -219,25 +219,9 @@ FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteResp
             ElseIf lblTipo.Text = "d" Then
                 datePicker.Value = rs.Fields("Resposta").Value
             End If
-        Else
-            MsgBox("Error while opening Recordset.")
+
         End If
-    End Sub
-    Private Sub txtRespostaTexto_VisibleChanged(sender As Object, e As EventArgs)
-        checkResposta()
-    End Sub
-
-    Private Sub txtRespostaNum_VisibleChanged(sender As Object, e As EventArgs)
-        checkResposta()
-    End Sub
-
-    Private Sub comboOpcao_VisibleChanged(sender As Object, e As EventArgs)
-        checkResposta()
-    End Sub
-
-    Private Sub datePicker_VisibleChanged(sender As Object, e As EventArgs)
-        checkResposta()
-    End Sub
+    End Function
 
     Function prepLayout()
 
@@ -245,7 +229,7 @@ FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteResp
         txtRespostaNum.Visible = False
         comboOpcao.Visible = False
         datePicker.Visible = False
-        Return True
+
 
     End Function
     Private Sub UcSaySomething1_pkValChanged() Handles UcSaySomething1.pkValChanged
@@ -256,7 +240,19 @@ FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteResp
         Close()
     End Sub
 
-    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+    Private Sub comboOpcao_VisibleChanged(sender As Object, e As EventArgs) Handles comboOpcao.VisibleChanged
+        checkResposta()
+    End Sub
 
+    Private Sub txtRespostaNum_VisibleChanged(sender As Object, e As EventArgs) Handles txtRespostaNum.VisibleChanged
+        checkResposta()
+    End Sub
+
+    Private Sub txtRespostaTexto_VisibleChanged(sender As Object, e As EventArgs) Handles txtRespostaTexto.VisibleChanged
+        checkResposta()
+    End Sub
+
+    Private Sub datePicker_VisibleChanged(sender As Object, e As EventArgs) Handles datePicker.VisibleChanged
+        checkResposta()
     End Sub
 End Class

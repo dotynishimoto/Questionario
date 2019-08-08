@@ -62,7 +62,8 @@
         Dim s As String, sErro As String
         Dim retval As Boolean
         sErro = ""
-        s = "select * from " & Me.tbName
+
+        s = Me.tbName
         retval = getRS(s, rs, False, sErro)
         If retval Then
             comboOperador.Items.Clear()
@@ -122,7 +123,10 @@
         If (comboOperador.SelectedItem) = "Like" Then
             sw = Replace(sw, sw, sw & sep & "%" & txtVal.Text & "%" & sep)
         ElseIf rs.Fields(comboCampo.SelectedItem).Type = ADODB.DataTypeEnum.adDate Then
-            sw = Replace(sw, sw, sw & sep & "'#" & txtVal.Text & "#'" & sep)
+
+            Dim getDate As DateTime = Convert.ToDateTime(txtVal.Text)
+
+            sw = Replace(sw, sw, sw & sep & "#" & FormatDateTime(getDate, DateFormat.ShortDate) & "#" & sep)
         Else
             sw = Replace(sw, sw, sw & sep & txtVal.Text & sep)
         End If
@@ -148,7 +152,6 @@
 
         prepGrid(rs, s, sErro, retval)
         If retval Then
-
 
             If Not grid1.CurrentRow Is Nothing Then
 
@@ -178,9 +181,11 @@
 
         prepGrid(rs, s, sErro, retval)
 
-
         comboCampo.Items.Clear()
         comboOperador.Items.Clear()
+        comboCampo.Text = String.Empty
+        comboOperador.Text = String.Empty
+        txtVal.Clear()
         If retval Then
 
             da.Fill(ds, rs, tbName)
@@ -188,15 +193,22 @@
 
             For i = 0 To rs.Fields.Count - 1
                 comboCampo.Items.Add(rs.Fields.Item(i).Name)
+                If rs.Fields(i).Type = ADODB.DataTypeEnum.adDate Then
+                    grid1.Columns(i).DefaultCellStyle.Format = "dd/MM/yyyy"
+                End If
             Next
+
         End If
     End Sub
     Function prepGrid(rs As ADODB.Recordset, ByRef s As String, sErro As String, ByRef retval As Boolean) As Boolean
 
-        s = "select * from " & Me.tbName
+        s = Me.tbName
         retval = getRS(s, rs, False, sErro)
 
         Return True
     End Function
 
+    Private Sub Grid1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles grid1.CellContentClick
+
+    End Sub
 End Class

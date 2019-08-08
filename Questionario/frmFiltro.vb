@@ -46,7 +46,7 @@ OR tblEnquete.Data_Dia =  #" & FormatDateTime(dateFilter.Value, DateFormat.Short
 
         If retVal Then
             da.Fill(ds, rs, "tblEnquete")
-            mainForm.gridEnquete.DataSource = (ds.Tables("tblEnquete"))
+            'mainForm.gridEnquete.DataSource = (ds.Tables("tblEnquete"))
         Else
             MsgBox("Error while opening Recordset.")
         End If

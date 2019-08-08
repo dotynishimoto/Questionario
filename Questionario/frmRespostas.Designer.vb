@@ -45,10 +45,10 @@ Partial Class frmRespostas
         Me.datePicker = New System.Windows.Forms.DateTimePicker()
         Me.comboOpcao = New System.Windows.Forms.ComboBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.lblEnquete = New System.Windows.Forms.Label()
-        Me.gridPessoas = New System.Windows.Forms.DataGridView()
         Me.UcSaySomething1 = New Questionario.ucSaySomething()
+        Me.lblEnquete = New System.Windows.Forms.Label()
         Me.UcSayRespondente = New Questionario.ucSaySomething()
+        Me.gridPessoas = New System.Windows.Forms.DataGridView()
         Me.pnlPerguntas.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.gridPessoas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -142,12 +142,11 @@ Partial Class frmRespostas
         '
         Me.lblIDPergunta.AutoSize = True
         Me.lblIDPergunta.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIDPergunta.Location = New System.Drawing.Point(540, 360)
+        Me.lblIDPergunta.Location = New System.Drawing.Point(527, 280)
         Me.lblIDPergunta.Name = "lblIDPergunta"
         Me.lblIDPergunta.Size = New System.Drawing.Size(110, 20)
         Me.lblIDPergunta.TabIndex = 31
         Me.lblIDPergunta.Text = "lblIDPergunta"
-        Me.lblIDPergunta.Visible = False
         '
         'lblIDQuestionario
         '
@@ -164,12 +163,11 @@ Partial Class frmRespostas
         '
         Me.lblIDOrdem.AutoSize = True
         Me.lblIDOrdem.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIDOrdem.Location = New System.Drawing.Point(540, 340)
+        Me.lblIDOrdem.Location = New System.Drawing.Point(527, 258)
         Me.lblIDOrdem.Name = "lblIDOrdem"
         Me.lblIDOrdem.Size = New System.Drawing.Size(94, 20)
         Me.lblIDOrdem.TabIndex = 33
         Me.lblIDOrdem.Text = "lblIDOrdem"
-        Me.lblIDOrdem.Visible = False
         '
         'lblHoldPaciente
         '
@@ -196,7 +194,7 @@ Partial Class frmRespostas
         '
         Me.lblIDHoldEnquete.AutoSize = True
         Me.lblIDHoldEnquete.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIDHoldEnquete.Location = New System.Drawing.Point(540, 279)
+        Me.lblIDHoldEnquete.Location = New System.Drawing.Point(527, 235)
         Me.lblIDHoldEnquete.Name = "lblIDHoldEnquete"
         Me.lblIDHoldEnquete.Size = New System.Drawing.Size(139, 20)
         Me.lblIDHoldEnquete.TabIndex = 40
@@ -285,25 +283,6 @@ Partial Class frmRespostas
         Me.Panel1.Size = New System.Drawing.Size(417, 166)
         Me.Panel1.TabIndex = 49
         '
-        'lblEnquete
-        '
-        Me.lblEnquete.AutoSize = True
-        Me.lblEnquete.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblEnquete.Location = New System.Drawing.Point(165, -1)
-        Me.lblEnquete.Name = "lblEnquete"
-        Me.lblEnquete.Size = New System.Drawing.Size(92, 25)
-        Me.lblEnquete.TabIndex = 50
-        Me.lblEnquete.Text = "Enquete"
-        '
-        'gridPessoas
-        '
-        Me.gridPessoas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.gridPessoas.Location = New System.Drawing.Point(478, 38)
-        Me.gridPessoas.Name = "gridPessoas"
-        Me.gridPessoas.RowTemplate.Height = 24
-        Me.gridPessoas.Size = New System.Drawing.Size(303, 166)
-        Me.gridPessoas.TabIndex = 50
-        '
         'UcSaySomething1
         '
         Me.UcSaySomething1.Caption = "Caput"
@@ -317,6 +296,16 @@ Partial Class frmRespostas
         Me.UcSaySomething1.TabIndex = 46
         Me.UcSaySomething1.tbName = Nothing
         '
+        'lblEnquete
+        '
+        Me.lblEnquete.AutoSize = True
+        Me.lblEnquete.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEnquete.Location = New System.Drawing.Point(165, -1)
+        Me.lblEnquete.Name = "lblEnquete"
+        Me.lblEnquete.Size = New System.Drawing.Size(92, 25)
+        Me.lblEnquete.TabIndex = 50
+        Me.lblEnquete.Text = "Enquete"
+        '
         'UcSayRespondente
         '
         Me.UcSayRespondente.Caption = "Caput"
@@ -329,6 +318,15 @@ Partial Class frmRespostas
         Me.UcSayRespondente.Size = New System.Drawing.Size(433, 35)
         Me.UcSayRespondente.TabIndex = 47
         Me.UcSayRespondente.tbName = Nothing
+        '
+        'gridPessoas
+        '
+        Me.gridPessoas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.gridPessoas.Location = New System.Drawing.Point(478, 38)
+        Me.gridPessoas.Name = "gridPessoas"
+        Me.gridPessoas.RowTemplate.Height = 24
+        Me.gridPessoas.Size = New System.Drawing.Size(303, 166)
+        Me.gridPessoas.TabIndex = 50
         '
         'frmRespostas
         '

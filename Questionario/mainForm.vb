@@ -1,4 +1,11 @@
-﻿Public Class mainForm
+﻿
+Imports iTextSharp.text
+Imports iTextSharp.text.pdf
+Imports System.IO
+Imports System.Data
+Imports System.Reflection
+Imports System.Windows.Forms.DataVisualization.Charting
+Public Class mainForm
 
     Dim ds As New DataSet
 
@@ -6,9 +13,16 @@
         prePall()
     End Sub
     Function prePall()
-        Me.UcList1.tbName = "tblPessoas"
+        Me.UcList1.tbName = "select * from  tblPessoas"
         Me.UcList1.pkField = "ID"
         Me.UcList1.sayField = "ID"
+        Me.UcList1.grid1.Height = 300
+
+        Me.UcListEnquete.tbName = "SELECT tblEnqueteRespostas.ID_Enquete, tblEnqueteRespostas.ID_Questionario, tblPessoas.Nome, tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblEnquete.Data_Dia
+FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete) ON tblPessoas.ID = tblEnquete.ID_Paciente"
+        Me.UcListEnquete.pkField = "ID_Enquete"
+        Me.UcListEnquete.sayField = "ID_Enquete"
+        'Me.UcListEnquete.grid1.Height = 300
 
 
         Dim rs As New ADODB.Recordset
@@ -45,7 +59,7 @@
         Dim retVal As Boolean
         retVal = gridPopulate(crudGrid.gridPerguntas)
     End Sub
-    Private Sub gridPessoas_SelectionChanged(sender As Object, e As EventArgs) Handles gridEnquete.SelectionChanged
+    Private Sub gridPessoas_SelectionChanged(sender As Object, e As EventArgs)
         Dim retVal As Boolean
         retVal = gridPopulate(crudGrid.gridPessoas)
     End Sub
@@ -113,7 +127,7 @@
                 f.lblIDPessoas.Text = ""
             Case crudOptions.edit
                 f.lblIDPessoas.Text = Me.UcList1.lblSay.Text
-                '  f.lblHoldCRM.Text = lblIDHoldCRM.Text
+
         End Select
         f.Prepall()
         f.ShowDialog()
@@ -199,11 +213,11 @@ WHERE rrGrupoQuestao.ID_Grupo= " & Val(Trim(lblIDGrupo.Text)) & ""
                 If retVal Then
 
                     da.Fill(ds, rs, "tblEnquete")
-                    gridEnquete.DataSource = (ds.Tables("tblEnquete"))
-                    gridEnquete.Columns(0).Width = 35
-                    gridEnquete.Columns(1).Width = 60
-                    gridEnquete.Columns(2).Width = 60
-                    gridEnquete.Columns(3).Width = 60
+                    ' gridEnquete.DataSource = (ds.Tables("tblEnquete"))
+                    ' gridEnquete.Columns(0).Width = 35
+                    'gridEnquete.Columns(1).Width = 60
+                    ' gridEnquete.Columns(2).Width = 60
+                    'gridEnquete.Columns(3).Width = 60
                 End If
 
             Case crudGrid.gridUpdateGrupo
@@ -338,6 +352,132 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         Else
             MsgBox("Error while opening Recordset.")
         End If
+    End Sub
+
+    Private Sub CmdCreateChart_Click(sender As Object, e As EventArgs) Handles cmdCreateChart.Click
+        Dim rs As New ADODB.Recordset
+        Dim s As String, sErro As String
+        Dim retval As Boolean
+        sErro = ""
+        s = "Select * from tblPessoas"
+
+        retval = getRS(s, rs, False, sErro)
+        If retval Then
+            Do While Not rs.EOF
+                Chart1.Series("Series1").Points.AddXY(rs.Fields("Nome").Value, rs.Fields("ID").Value)
+                rs.MoveNext()
+            Loop
+
+
+        End If
+
+    End Sub
+
+    Function createTable()
+        Dim dtblTable As New DataTable
+        Dim Table As PdfPTable = New PdfPTable(dtblTable.Columns.Count)
+        Dim btnColumnHeader As BaseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED)
+        Dim fntColumnHeader As Font = New Font(btnColumnHeader, 10)
+        Dim i As Integer = 0
+        Dim j As Integer = 0
+
+        Dim Document As Document = New Document()
+        Document.SetPageSize(iTextSharp.text.PageSize.A4)
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("TableTeste.pdf", FileMode.Create))
+
+        Document.Open()
+        For i = 0 To i < dtblTable.Rows.Count
+            Dim cell As PdfPCell = New PdfPCell()
+            cell.BackgroundColor = BaseColor.GRAY
+            cell.AddElement(New Chunk(dtblTable.Columns(i).ColumnName.ToUpper(), fntColumnHeader))
+            Table.AddCell(cell)
+        Next
+
+        For i = 0 To i < dtblTable.Rows.Count
+            For j = 0 To j < dtblTable.Columns.Count
+                Table.AddCell(dtblTable.Rows(i)(j).ToString)
+            Next
+        Next
+        Document.Add(Table)
+
+
+
+        Document.Close()
+        pdfWrite.Close()
+
+    End Function
+
+    Private Sub CmdCreateTable_Click(sender As Object, e As EventArgs) Handles cmdCreateTable.Click
+
+        Dim paragraph As New Paragraph
+        Dim Document As New Document(PageSize.A4, 40, 40, 40, 20)
+
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("TableTeste.pdf", FileMode.Create))
+
+        Document.Open()
+        'font
+        Dim pTitle As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK)
+        Dim pHeader As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLDITALIC, BaseColor.BLACK)
+        Dim pTable As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK)
+        paragraph = New Paragraph(New Chunk("Relatorio", pTitle))
+
+        'insert title into pdf file
+        paragraph.Alignment = Element.ALIGN_CENTER
+        paragraph.SpacingAfter = 5.0F
+
+        'set and add page with current settings
+        Document.Add(paragraph)
+
+        'create data into table
+        Dim Table As New PdfPTable(Me.UcListEnquete.grid1.Columns.Count)
+
+        'setting with of table
+        Table.TotalWidth = 500.0F
+        Table.LockedWidth = True
+
+        Dim widths(0 To Me.UcListEnquete.grid1.Columns.Count - 1) As Single
+        For i As Integer = 0 To Me.UcListEnquete.grid1.Columns.Count - 1
+            widths(i) = 1.0F
+        Next
+
+        Table.SetWidths(widths)
+        Table.HorizontalAlignment = 0
+        Table.SpacingBefore = 5.0F
+
+        'declaration pdf cells
+        Dim pdfCell As PdfPCell = New PdfPCell
+        pdfCell.BorderColor = BaseColor.RED
+
+        'create header
+        For i As Integer = 0 To Me.UcListEnquete.grid1.Columns.Count - 1
+            pdfCell = New PdfPCell(New Phrase(New Chunk(Me.UcListEnquete.grid1.Columns(i).HeaderText, pHeader)))
+            'alignment header table
+            pdfCell.HorizontalAlignment = PdfPCell.ALIGN_LEFT
+
+            'Add cells into pdf table
+            Table.AddCell(pdfCell)
+        Next
+
+        'add data into pdf table
+        For i As Integer = 0 To Me.UcListEnquete.grid1.Rows.Count - 2
+            For j As Integer = 0 To Me.UcListEnquete.grid1.Columns.Count - 1
+
+                pdfCell = New PdfPCell(New Phrase(Me.UcListEnquete.grid1(j, i).FormattedValue.ToString(), pTable))
+                Table.HorizontalAlignment = PdfPCell.ALIGN_CENTER
+                Table.AddCell(pdfCell)
+            Next
+        Next
+
+        Document.Add(Table)
+
+        Dim chartimage As New MemoryStream()
+        Chart1.SaveImage(chartimage, ChartImageFormat.Png)
+        Dim Chart_Image As iTextSharp.text.Image = iTextSharp.text.Image.GetInstance(chartimage.GetBuffer())
+        Chart_Image.ScalePercent(100.0F)
+
+        Document.Add(Chart_Image)
+        Document.Close()
+        pdfWrite.Close()
     End Sub
 
 

@@ -22,6 +22,9 @@ Partial Class mainForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.btnUpdateGrupo = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.cmdPrepall = New System.Windows.Forms.Button()
@@ -40,7 +43,6 @@ Partial Class mainForm
         Me.btnAddQuest = New System.Windows.Forms.Button()
         Me.btnEditQuest = New System.Windows.Forms.Button()
         Me.btnDeleteQuest = New System.Windows.Forms.Button()
-        Me.gridEnquete = New System.Windows.Forms.DataGridView()
         Me.cmdAddPessoas = New System.Windows.Forms.Button()
         Me.cmdEditPessoas = New System.Windows.Forms.Button()
         Me.cmdDeletePessoas = New System.Windows.Forms.Button()
@@ -57,21 +59,25 @@ Partial Class mainForm
         Me.gridListGrupo = New System.Windows.Forms.DataGridView()
         Me.cmdFilter = New System.Windows.Forms.Button()
         Me.pnlEnquetes = New System.Windows.Forms.Panel()
+        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.cmdCreateTable = New System.Windows.Forms.Button()
+        Me.cmdCreateChart = New System.Windows.Forms.Button()
         Me.lblEnquetes = New System.Windows.Forms.Label()
         Me.tabQuestionario = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.UcList1 = New Questionario.ucList()
+        Me.UcListEnquete = New Questionario.ucList()
         CType(Me.gridGrupos, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gridPerguntas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gridQuestionario, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.gridEnquete, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlQuestionario.SuspendLayout()
         Me.pnlPessoas.SuspendLayout()
         Me.pnlGrupos.SuspendLayout()
         CType(Me.gridListGrupo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlEnquetes.SuspendLayout()
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabQuestionario.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -252,15 +258,6 @@ Partial Class mainForm
         Me.btnDeleteQuest.Text = "Delete"
         Me.btnDeleteQuest.UseVisualStyleBackColor = True
         '
-        'gridEnquete
-        '
-        Me.gridEnquete.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.gridEnquete.Location = New System.Drawing.Point(37, 35)
-        Me.gridEnquete.Name = "gridEnquete"
-        Me.gridEnquete.RowTemplate.Height = 24
-        Me.gridEnquete.Size = New System.Drawing.Size(438, 327)
-        Me.gridEnquete.TabIndex = 27
-        '
         'cmdAddPessoas
         '
         Me.cmdAddPessoas.Location = New System.Drawing.Point(593, 43)
@@ -334,7 +331,7 @@ Partial Class mainForm
         Me.pnlPessoas.Controls.Add(Me.cmdAddPessoas)
         Me.pnlPessoas.Location = New System.Drawing.Point(3, 6)
         Me.pnlPessoas.Name = "pnlPessoas"
-        Me.pnlPessoas.Size = New System.Drawing.Size(669, 371)
+        Me.pnlPessoas.Size = New System.Drawing.Size(685, 574)
         Me.pnlPessoas.TabIndex = 33
         '
         'lblPessoas
@@ -421,23 +418,64 @@ Partial Class mainForm
         '
         'cmdFilter
         '
-        Me.cmdFilter.Location = New System.Drawing.Point(507, 3)
+        Me.cmdFilter.Location = New System.Drawing.Point(286, 494)
         Me.cmdFilter.Name = "cmdFilter"
-        Me.cmdFilter.Size = New System.Drawing.Size(75, 23)
+        Me.cmdFilter.Size = New System.Drawing.Size(100, 37)
         Me.cmdFilter.TabIndex = 37
         Me.cmdFilter.Text = "Filter"
         Me.cmdFilter.UseVisualStyleBackColor = True
+        Me.cmdFilter.Visible = False
         '
         'pnlEnquetes
         '
         Me.pnlEnquetes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlEnquetes.Controls.Add(Me.Chart1)
+        Me.pnlEnquetes.Controls.Add(Me.UcListEnquete)
+        Me.pnlEnquetes.Controls.Add(Me.cmdCreateTable)
+        Me.pnlEnquetes.Controls.Add(Me.cmdCreateChart)
         Me.pnlEnquetes.Controls.Add(Me.lblEnquetes)
         Me.pnlEnquetes.Controls.Add(Me.cmdFilter)
-        Me.pnlEnquetes.Controls.Add(Me.gridEnquete)
-        Me.pnlEnquetes.Location = New System.Drawing.Point(53, 6)
+        Me.pnlEnquetes.Location = New System.Drawing.Point(6, 6)
         Me.pnlEnquetes.Name = "pnlEnquetes"
-        Me.pnlEnquetes.Size = New System.Drawing.Size(586, 410)
+        Me.pnlEnquetes.Size = New System.Drawing.Size(682, 545)
         Me.pnlEnquetes.TabIndex = 38
+        '
+        'Chart1
+        '
+        ChartArea1.AxisX.Interval = 1.0R
+        ChartArea1.AxisX.IsLabelAutoFit = False
+        ChartArea1.AxisX.LabelStyle.Angle = -90
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend1)
+        Me.Chart1.Location = New System.Drawing.Point(3, 230)
+        Me.Chart1.Name = "Chart1"
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
+        Me.Chart1.Size = New System.Drawing.Size(674, 237)
+        Me.Chart1.TabIndex = 42
+        Me.Chart1.Text = "Chart1"
+        '
+        'cmdCreateTable
+        '
+        Me.cmdCreateTable.Location = New System.Drawing.Point(392, 494)
+        Me.cmdCreateTable.Name = "cmdCreateTable"
+        Me.cmdCreateTable.Size = New System.Drawing.Size(142, 37)
+        Me.cmdCreateTable.TabIndex = 40
+        Me.cmdCreateTable.Text = "Create PDF Table"
+        Me.cmdCreateTable.UseVisualStyleBackColor = True
+        '
+        'cmdCreateChart
+        '
+        Me.cmdCreateChart.Location = New System.Drawing.Point(540, 494)
+        Me.cmdCreateChart.Name = "cmdCreateChart"
+        Me.cmdCreateChart.Size = New System.Drawing.Size(120, 37)
+        Me.cmdCreateChart.TabIndex = 39
+        Me.cmdCreateChart.Text = "Create Chart"
+        Me.cmdCreateChart.UseVisualStyleBackColor = True
         '
         'lblEnquetes
         '
@@ -480,7 +518,7 @@ Partial Class mainForm
         Me.TabPage2.Location = New System.Drawing.Point(4, 25)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(682, 604)
+        Me.TabPage2.Size = New System.Drawing.Size(694, 587)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Pessoas"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -491,7 +529,7 @@ Partial Class mainForm
         Me.TabPage3.Location = New System.Drawing.Point(4, 25)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(682, 604)
+        Me.TabPage3.Size = New System.Drawing.Size(694, 587)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Enquete"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -504,15 +542,27 @@ Partial Class mainForm
         Me.UcList1.pkField = Nothing
         Me.UcList1.pkVal = Nothing
         Me.UcList1.sayField = Nothing
-        Me.UcList1.Size = New System.Drawing.Size(581, 320)
+        Me.UcList1.Size = New System.Drawing.Size(581, 503)
         Me.UcList1.TabIndex = 40
         Me.UcList1.tbName = Nothing
+        '
+        'UcListEnquete
+        '
+        Me.UcListEnquete.Caption = Nothing
+        Me.UcListEnquete.Location = New System.Drawing.Point(12, 35)
+        Me.UcListEnquete.Name = "UcListEnquete"
+        Me.UcListEnquete.pkField = Nothing
+        Me.UcListEnquete.pkVal = Nothing
+        Me.UcListEnquete.sayField = Nothing
+        Me.UcListEnquete.Size = New System.Drawing.Size(648, 432)
+        Me.UcListEnquete.TabIndex = 41
+        Me.UcListEnquete.tbName = Nothing
         '
         'mainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(717, 620)
+        Me.ClientSize = New System.Drawing.Size(709, 620)
         Me.Controls.Add(Me.tabQuestionario)
         Me.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.Name = "mainForm"
@@ -520,7 +570,6 @@ Partial Class mainForm
         CType(Me.gridGrupos, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gridPerguntas, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gridQuestionario, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.gridEnquete, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlQuestionario.ResumeLayout(False)
         Me.pnlQuestionario.PerformLayout()
         Me.pnlPessoas.ResumeLayout(False)
@@ -530,6 +579,7 @@ Partial Class mainForm
         CType(Me.gridListGrupo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlEnquetes.ResumeLayout(False)
         Me.pnlEnquetes.PerformLayout()
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabQuestionario.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
@@ -555,7 +605,6 @@ Partial Class mainForm
     Friend WithEvents btnAddQuest As Button
     Friend WithEvents btnEditQuest As Button
     Friend WithEvents btnDeleteQuest As Button
-    Friend WithEvents gridEnquete As DataGridView
     Friend WithEvents cmdAddPessoas As Button
     Friend WithEvents cmdEditPessoas As Button
     Friend WithEvents cmdDeletePessoas As Button
@@ -578,4 +627,8 @@ Partial Class mainForm
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents UcList1 As ucList
+    Friend WithEvents cmdCreateChart As Button
+    Friend WithEvents cmdCreateTable As Button
+    Friend WithEvents UcListEnquete As ucList
+    Friend WithEvents Chart1 As DataVisualization.Charting.Chart
 End Class

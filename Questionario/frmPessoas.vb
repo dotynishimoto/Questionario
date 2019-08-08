@@ -63,6 +63,7 @@
         Else
             MsgBox("Error while opening Recordset.")
         End If
+
     End Sub
     Public Sub numberOnly(ByVal e As System.Windows.Forms.KeyPressEventArgs)
 
@@ -78,7 +79,6 @@
         ElseIf txtCPF.Text.Length = 10 Or Asc(e.KeyChar) = 8 Then
         Else
             e.Handled = True
-
         End If
     End Sub
     Private Sub txtCPF_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtCPF.KeyPress
