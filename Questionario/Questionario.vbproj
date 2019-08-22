@@ -47,6 +47,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>download_d8F_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="itextsharp">
       <HintPath>.\itextsharp.dll</HintPath>
@@ -105,6 +108,12 @@
       <DependentUpon>frmPerguntas.vb</DependentUpon>
     </Compile>
     <Compile Include="frmPerguntas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportCreator.Designer.vb">
+      <DependentUpon>frmReportCreator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportCreator.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmStart.Designer.vb">
@@ -173,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPerguntas.resx">
       <DependentUpon>frmPerguntas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportCreator.resx">
+      <DependentUpon>frmReportCreator.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmStart.resx">
       <DependentUpon>frmStart.vb</DependentUpon>
@@ -275,6 +287,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="download_d8F_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

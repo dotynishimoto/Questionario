@@ -24,18 +24,20 @@ Partial Class frmGrupos
     Private Sub InitializeComponent()
         Me.btnOk = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.lblID = New System.Windows.Forms.Label()
+        Me.lblIDGrupo = New System.Windows.Forms.Label()
         Me.lblTitulo = New System.Windows.Forms.Label()
         Me.txtTitulo = New System.Windows.Forms.TextBox()
         Me.lblIDQuestionario = New System.Windows.Forms.Label()
         Me.lblOrdem = New System.Windows.Forms.Label()
         Me.txtOrdem = New System.Windows.Forms.TextBox()
         Me.lblGrupo = New System.Windows.Forms.Label()
+        Me.cmdPrepall = New System.Windows.Forms.Button()
+        Me.lblIDHold = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btnOk
         '
-        Me.btnOk.Location = New System.Drawing.Point(52, 131)
+        Me.btnOk.Location = New System.Drawing.Point(76, 131)
         Me.btnOk.Name = "btnOk"
         Me.btnOk.Size = New System.Drawing.Size(75, 23)
         Me.btnOk.TabIndex = 2
@@ -51,15 +53,15 @@ Partial Class frmGrupos
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
-        'lblID
+        'lblIDGrupo
         '
-        Me.lblID.AutoSize = True
-        Me.lblID.Location = New System.Drawing.Point(123, 168)
-        Me.lblID.Name = "lblID"
-        Me.lblID.Size = New System.Drawing.Size(35, 17)
-        Me.lblID.TabIndex = 4
-        Me.lblID.Text = "lblID"
-        Me.lblID.Visible = False
+        Me.lblIDGrupo.AutoSize = True
+        Me.lblIDGrupo.Location = New System.Drawing.Point(123, 168)
+        Me.lblIDGrupo.Name = "lblIDGrupo"
+        Me.lblIDGrupo.Size = New System.Drawing.Size(75, 17)
+        Me.lblIDGrupo.TabIndex = 4
+        Me.lblIDGrupo.Text = "lblIDGrupo"
+        Me.lblIDGrupo.Visible = False
         '
         'lblTitulo
         '
@@ -113,16 +115,37 @@ Partial Class frmGrupos
         Me.lblGrupo.TabIndex = 8
         Me.lblGrupo.Text = "Grupo"
         '
+        'cmdPrepall
+        '
+        Me.cmdPrepall.Location = New System.Drawing.Point(12, 9)
+        Me.cmdPrepall.Name = "cmdPrepall"
+        Me.cmdPrepall.Size = New System.Drawing.Size(75, 23)
+        Me.cmdPrepall.TabIndex = 9
+        Me.cmdPrepall.Text = "Prepall"
+        Me.cmdPrepall.UseVisualStyleBackColor = True
+        '
+        'lblIDHold
+        '
+        Me.lblIDHold.AutoSize = True
+        Me.lblIDHold.Location = New System.Drawing.Point(214, 9)
+        Me.lblIDHold.Name = "lblIDHold"
+        Me.lblIDHold.Size = New System.Drawing.Size(64, 17)
+        Me.lblIDHold.TabIndex = 10
+        Me.lblIDHold.Text = "lblIDHold"
+        Me.lblIDHold.Visible = False
+        '
         'frmGrupos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(277, 185)
+        Me.Controls.Add(Me.lblIDHold)
+        Me.Controls.Add(Me.cmdPrepall)
         Me.Controls.Add(Me.lblGrupo)
         Me.Controls.Add(Me.txtOrdem)
         Me.Controls.Add(Me.lblOrdem)
         Me.Controls.Add(Me.lblIDQuestionario)
-        Me.Controls.Add(Me.lblID)
+        Me.Controls.Add(Me.lblIDGrupo)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOk)
         Me.Controls.Add(Me.lblTitulo)
@@ -135,11 +158,13 @@ Partial Class frmGrupos
     End Sub
     Friend WithEvents btnOk As Button
     Friend WithEvents btnCancel As Button
-    Friend WithEvents lblID As Label
+    Friend WithEvents lblIDGrupo As Label
     Friend WithEvents lblTitulo As Label
     Friend WithEvents txtTitulo As TextBox
     Friend WithEvents lblIDQuestionario As Label
     Friend WithEvents lblOrdem As Label
     Friend WithEvents txtOrdem As TextBox
     Friend WithEvents lblGrupo As Label
+    Friend WithEvents cmdPrepall As Button
+    Friend WithEvents lblIDHold As Label
 End Class

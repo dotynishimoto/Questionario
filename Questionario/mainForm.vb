@@ -67,6 +67,10 @@ FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnqu
         Dim retVal As Boolean
         retVal = gridPopulate(crudGrid.gridUpdateGrupo)
     End Sub
+    Private Sub gridListPerguntas_SelectionChanged(sender As Object, e As EventArgs) Handles gridListPerguntas.SelectionChanged
+        Dim retVal As Boolean
+        retVal = gridPopulate(crudGrid.gridListPerguntas)
+    End Sub
     Private Sub BtnUpdatePergunta_Click(sender As Object, e As EventArgs) Handles btnEditPergunta.Click
         Dim retVal As Boolean
         retVal = addEditPerguntas(crudOptions.edit)
@@ -83,6 +87,10 @@ FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnqu
         Dim retVal As Boolean
         retVal = addEditQuestionario(crudOptions.addNew)
     End Sub
+    Private Sub CmdEditGrupo_Click(sender As Object, e As EventArgs) Handles cmdEditGrupo.Click
+        Dim retVal As Boolean
+        retVal = addEditGrupos(crudOptions.edit)
+    End Sub
     Private Sub CmdAddPessoas_Click(sender As Object, e As EventArgs) Handles cmdAddPessoas.Click
         Dim retVal As Boolean
         retVal = addEditPessoas(crudOptions.addNew)
@@ -90,6 +98,10 @@ FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnqu
     Private Sub CmdEditPessoas_Click(sender As Object, e As EventArgs) Handles cmdEditPessoas.Click
         Dim retVal As Boolean
         retVal = addEditPessoas(crudOptions.edit)
+    End Sub
+    Private Sub BtnAddGrupo_Click(sender As Object, e As EventArgs) Handles btnAddGrupo.Click
+        Dim retVal As Boolean
+        retVal = addEditPessoas(crudOptions.addNew)
     End Sub
     Function addEditPerguntas(q As crudOptions) As Boolean
         Dim f As New frmPerguntas
@@ -119,6 +131,22 @@ FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnqu
         f.ShowDialog()
         f.Close()
         Return True
+    End Function
+
+    Function addEditGrupos(q As crudOptions) As Boolean
+        Dim f As New frmGrupos
+        Select Case q
+            Case crudOptions.addNew
+                f.lblIDQuestionario.Text = lblIDQuestionario.Text
+                f.lblIDGrupo.Text = ""
+                f.lblIDHold.Text = ""
+            Case crudOptions.edit
+                f.lblIDQuestionario.Text = lblIDQuestionario.Text
+                f.lblIDGrupo.Text = lblIDGrupo.Text
+        End Select
+        f.Prepall()
+        f.ShowDialog()
+        f.Close()
     End Function
     Function addEditPessoas(q As crudOptions) As Boolean
         Dim f As New frmPessoas
@@ -227,6 +255,15 @@ WHERE rrGrupoQuestao.ID_Grupo= " & Val(Trim(lblIDGrupo.Text)) & ""
                     lblIDGrupo.Text = selectedrow.Cells(0).Value.ToString
                     lblIDOrdem.Text = selectedrow.Cells(2).Value.ToString
                 End If
+
+            Case crudGrid.gridListPerguntas
+                If Not gridListPerguntas.CurrentRow Is Nothing Then
+                    index = gridListPerguntas.CurrentRow.Index
+                    selectedrow = gridListPerguntas.Rows(index)
+
+                    lblIDPergunta.Text = selectedrow.Cells(0).Value.ToString
+                    lblIDOrdem.Text = selectedrow.Cells(1).Value.ToString
+                End If
         End Select
         Return True
     End Function
@@ -261,16 +298,43 @@ WHERE rrGrupoQuestao.ID_Grupo= " & Val(Trim(lblIDGrupo.Text)) & ""
         End If
         cmdPrepall.PerformClick()
     End Sub
+    Private Sub CmdPassPergunta_Click(sender As Object, e As EventArgs) Handles cmdPassPerguntas.Click
+        Dim rs As New ADODB.Recordset
+
+        Dim s As String
+        Dim retval As Boolean
+        Dim serro As String = ""
+        s = "Select * from rrGrupoQuestao where ID_Grupo = " & Val(Trim(lblIDGrupo.Text)) & " and ID_Questao = " & Val(Trim(lblIDPergunta.Text)) & ""
+
+        retval = getRS(s, rs, False, serro)
+
+        If retval Then
+            If rs.RecordCount > 0 Then
+                MsgBox("Question already in this questionary")
+
+            Else
+                rs.AddNew()
+
+                rs.Fields("ID_Grupo").Value = lblIDGrupo.Text
+                rs.Fields("ID_Questao").Value = lblIDPergunta.Text
+                rs.Fields("Ordem").Value = lblIDOrdem.Text
+
+
+                rs.Update()
+                rs.Close()
+            End If
+        Else
+            MsgBox("Error while opening Recordset.")
+
+        End If
+        cmdPrepall.PerformClick()
+    End Sub
 
     Private Sub BtnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
 
-    Private Sub BtnUpdateGrupo_Click(sender As Object, e As EventArgs) Handles btnUpdateGrupo.Click
-        Dim f As New frmGrupos
-        f.lblIDQuestionario.Text = lblIDQuestionario.Text
-        f.ShowDialog()
-    End Sub
+
     Private Sub BtnDeletePergunta_Click(sender As Object, e As EventArgs) Handles btnDeletePergunta.Click
         Dim retVal As Boolean
         retVal = deleteBtn(crudDelete.Pergunta)
@@ -318,7 +382,6 @@ WHERE rrGrupoQuestao.ID_Grupo= " & Val(Trim(lblIDGrupo.Text)) & ""
                 MsgBox("Pergunta Deletada")
                 prePall()
         End Select
-
         Return True
     End Function
 
@@ -327,11 +390,25 @@ WHERE rrGrupoQuestao.ID_Grupo= " & Val(Trim(lblIDGrupo.Text)) & ""
         f.lblIDQuestionario.Text = lblIDQuestionario.Text
         f.ShowDialog()
     End Sub
+    Private Sub CmdListPerguntas_Click(sender As Object, e As EventArgs) Handles cmdListPerguntas.Click
+        Dim rs As New ADODB.Recordset
+        cmdPass.Enabled = True
+        Dim da As New System.Data.OleDb.OleDbDataAdapter
+        Dim retval As Boolean
+        Dim sErro As String = ""
+        Dim s As String = "SELECT tblQuestoes.ID, rrGrupoQuestao.Ordem, tblQuestoes.Questao
+FROM tblQuestoes INNER JOIN rrGrupoQuestao ON tblQuestoes.ID = rrGrupoQuestao.ID_Questao
+GROUP BY tblQuestoes.ID, rrGrupoQuestao.Ordem, tblQuestoes.Questao"
+        retval = getRS(s, rs, False, sErro)
+        If retval Then
+            da.Fill(ds, rs, "tblQuestoes")
+            gridListPerguntas.DataSource = (ds.Tables("tblQuestoes"))
+            gridListPerguntas.Columns(0).Width = 25
+            gridListPerguntas.Columns(1).Visible = False
 
-
-
-    Private Sub CmdFilter_Click(sender As Object, e As EventArgs) Handles cmdFilter.Click
-        frmFiltro.Show()
+        Else
+            MsgBox("Error while opening Recordset.")
+        End If
     End Sub
 
     Private Sub BtnListGrupos_Click(sender As Object, e As EventArgs) Handles btnListGrupos.Click
@@ -354,6 +431,7 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         End If
     End Sub
 
+
     Private Sub CmdCreateChart_Click(sender As Object, e As EventArgs) Handles cmdCreateChart.Click
         Dim rs As New ADODB.Recordset
         Dim s As String, sErro As String
@@ -364,48 +442,14 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         retval = getRS(s, rs, False, sErro)
         If retval Then
             Do While Not rs.EOF
-                Chart1.Series("Series1").Points.AddXY(rs.Fields("Nome").Value, rs.Fields("ID").Value)
+                ' Chart1.Series("Series1").Points.AddXY(rs.Fields("Nome").Value, rs.Fields("ID").Value)
                 rs.MoveNext()
             Loop
-
 
         End If
 
     End Sub
 
-    Function createTable()
-        Dim dtblTable As New DataTable
-        Dim Table As PdfPTable = New PdfPTable(dtblTable.Columns.Count)
-        Dim btnColumnHeader As BaseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED)
-        Dim fntColumnHeader As Font = New Font(btnColumnHeader, 10)
-        Dim i As Integer = 0
-        Dim j As Integer = 0
-
-        Dim Document As Document = New Document()
-        Document.SetPageSize(iTextSharp.text.PageSize.A4)
-        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("TableTeste.pdf", FileMode.Create))
-
-        Document.Open()
-        For i = 0 To i < dtblTable.Rows.Count
-            Dim cell As PdfPCell = New PdfPCell()
-            cell.BackgroundColor = BaseColor.GRAY
-            cell.AddElement(New Chunk(dtblTable.Columns(i).ColumnName.ToUpper(), fntColumnHeader))
-            Table.AddCell(cell)
-        Next
-
-        For i = 0 To i < dtblTable.Rows.Count
-            For j = 0 To j < dtblTable.Columns.Count
-                Table.AddCell(dtblTable.Rows(i)(j).ToString)
-            Next
-        Next
-        Document.Add(Table)
-
-
-
-        Document.Close()
-        pdfWrite.Close()
-
-    End Function
 
     Private Sub CmdCreateTable_Click(sender As Object, e As EventArgs) Handles cmdCreateTable.Click
 
@@ -417,7 +461,7 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         Document.Open()
         'SETTING DATE
         Dim datee As String
-        datee = "Today's date is: " & Date.Now
+        datee = Date.Now
         Document.Add(New Paragraph(datee))
         'font
         Dim pTitle As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK)
@@ -474,7 +518,7 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         'TESTE
         Dim intTblWidth() As Integer = {20, 20, 20, 50, 50, 35}
         Table.SetWidths(intTblWidth)
-        Table.WidthPercentage = 50
+        ' Table.WidthPercentage = 50
 
 
         Document.Add(Table)
@@ -487,39 +531,298 @@ GROUP BY tblGrupoQuestoes.ID, tblGrupoQuestoes.Titulo, rrQuestionarioGrupo.Ordem
         ' Document.Add(Chart_Image)
 
 
-        'ADD SECOND TABLE
-        Dim Table2 As New PdfPTable(gridQuestionario.Columns.Count)
-        Dim widths2(0 To gridQuestionario.Columns.Count - 1) As Single
-        For i As Integer = 0 To gridQuestionario.Columns.Count - 1
-            widths2(i) = 1.0F
-        Next
-        Table2.SetWidths(widths2)
-        Table2.HorizontalAlignment = 0
-        Table2.SpacingBefore = 5.0F
 
-        For i As Integer = 0 To Me.gridQuestionario.Columns.Count - 1
-            pdfCell = New PdfPCell(New Phrase(New Chunk(Me.gridQuestionario.Columns(i).HeaderText, pHeader)))
-            pdfCell.HorizontalAlignment = PdfPCell.ALIGN_LEFT
-            Table2.AddCell(pdfCell)
-        Next
-        For i As Integer = 0 To gridQuestionario.Rows.Count - 2
-            For j As Integer = 0 To Me.gridQuestionario.Columns.Count - 1
-
-                pdfCell = New PdfPCell(New Phrase(gridQuestionario(j, i).FormattedValue.ToString(), pTable))
-                Table2.HorizontalAlignment = PdfPCell.ALIGN_CENTER
-                Table2.AddCell(pdfCell)
-            Next
-        Next
-
-        ' Table2.WidthPercentage = 50
-
-
-
-        Document.Add(Table2)
         Document.Add(Chart_Image)
         Document.Close()
         pdfWrite.Close()
     End Sub
+    Private Sub CMDIsoLentesRigidas_Click(sender As Object, e As EventArgs) Handles CMDIsoLentesRigidas.Click
+        Dim paragraph As New Paragraph
+        Dim Document As New Document(PageSize.A4, 40, 40, 40, 20)
+
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("TblLentesExperience.pdf", FileMode.Create))
+        Document.Open()
+        'SETTING DATE
+        Dim datee As String
+        datee = Date.Now
+        Document.Add(New Paragraph(datee))
+
+        Dim pTitle As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK)
+        Dim pHeader As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLDITALIC, BaseColor.BLACK)
+
+        'set and add page with current settings
+        Document.Add(paragraph)
+        Dim rs As New ADODB.Recordset
+        Dim s As String
+        Dim retval As Boolean
+        Dim serro As String = ""
+
+        paragraph = New Paragraph(New Chunk("Relatorio", pTitle))
+        'insert title into pdf file
+        paragraph.Alignment = Element.ALIGN_CENTER
+        paragraph.SpacingAfter = 5.0F
+
+        s ="SELECT tblEnqueteRespostas.ID_Questao, tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, Count(tblEnqueteRespostas.Resposta) AS CountOfResposta
+From tblEnqueteRespostas
+Group By tblEnqueteRespostas.ID_Questao, tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta
+"
+        retval = getRS(s, rs, False, serro)
+        Dim pdfcell As New PdfPCell
+
+
+
+        If retval Then
+            Dim table As New PdfPTable(rs.Fields.Count)
+            table.TotalWidth = 500.0F
+            table.LockedWidth = True
+
+            For i As Integer = 0 To rs.Fields.Count - 1
+                'adicionar o header
+                pdfcell = New PdfPCell(New Phrase(New Chunk(rs.Fields.Item(i).Name, pHeader)))
+                table.AddCell(pdfcell)
+            Next
+
+            Do While Not rs.EOF
+                For i = 0 To rs.Fields.Count - 1
+
+                    table.AddCell(rs.Fields(i).Value)
+                Next
+
+                rs.MoveNext()
+            Loop
+
+            Document.Add(table)
+
+        End If
+        Document.Close()
+        pdfWrite.Close()
+    End Sub
+    Private Sub CmdIsoPerSexo_Click(sender As Object, e As EventArgs) Handles cmdIsoPerSexo.Click
+        Dim paragraph As New Paragraph
+        Dim Document As New Document(PageSize.A4, 40, 40, 40, 20)
+
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("ISOTable.pdf", FileMode.Create))
+        Document.Open()
+        'SETTING DATE
+        Dim datee As String
+        datee = Date.Now
+        Document.Add(New Paragraph(datee))
+        Dim pTitle As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK)
+        Dim pHeader As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLDITALIC, BaseColor.BLACK)
+
+        paragraph = New Paragraph(New Chunk("Relatorio", pTitle))
+        'insert title into pdf file
+        paragraph.Alignment = Element.ALIGN_CENTER
+        paragraph.SpacingAfter = 5.0F
+
+        'set and add page with current settings
+        Document.Add(paragraph)
+        Dim rs As New ADODB.Recordset
+        Dim s As String
+        Dim retval As Boolean
+        Dim serro As String = ""
+
+        Dim chartimage As New MemoryStream()
+        Dim Chart_Image As iTextSharp.text.Image
+        Dim Series As New Series
+
+        s = "SELECT tblEnqueteRespostas.ID_Questao, Count(tblPessoas.Sexo) AS CountOfSexo, tblPessoas.Sexo, First(tblEnqueteRespostas.Questao) AS FirstOfQuestao, tblEnqueteRespostas.Resposta
+FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete) ON tblPessoas.ID = tblEnquete.ID_Paciente
+GROUP BY tblEnqueteRespostas.ID_Questao, tblPessoas.Sexo, tblEnqueteRespostas.Resposta
+HAVING (((tblEnqueteRespostas.ID_Questao)=2))
+"
+        retval = getRS(s, rs, False, serro)
+        Dim pdfcell As New PdfPCell
+
+        '  table.SetWidths(New Single() {0.3F, 0.7F}) setar largura de cada coluna
+
+        If retval Then
+            Dim table As New PdfPTable(rs.Fields.Count)
+            table.TotalWidth = 500.0F
+            table.LockedWidth = True
+
+            For i As Integer = 0 To rs.Fields.Count - 1
+                'adicionar o header
+                pdfcell = New PdfPCell(New Phrase(New Chunk(rs.Fields.Item(i).Name, pHeader)))
+                table.AddCell(pdfcell)
+            Next
+
+            Do While Not rs.EOF
+                For i = 0 To rs.Fields.Count - 1
+
+                    table.AddCell(rs.Fields(i).Value)
+                Next
+
+                rs.MoveNext()
+            Loop
+
+            Document.Add(table)
+
+        End If
+        rs.Close()
+
+        Series = New Series
+        clearChart(Series)
+        Chart1.Titles.Add("Masculino")
+        s = "SELECT tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblPessoas.Sexo, Count(tblPessoas.Sexo) AS CountOfSexo
+FROM(tblPessoas INNER JOIN tblEnquete On tblPessoas.ID = tblEnquete.ID_Paciente) INNER JOIN tblEnqueteRespostas On tblEnquete.ID = tblEnqueteRespostas.ID_Enquete
+        GROUP BY tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblPessoas.Sexo, tblEnqueteRespostas.ID_Questao
+HAVING(((tblPessoas.Sexo) = 'Masculino' ) And ((tblEnqueteRespostas.ID_Questao) = 2))"
+
+        retval = getRS(s, rs, False, serro)
+        If retval Then
+            Do While Not rs.EOF
+
+                Chart1.Series("Series1").Points.AddXY(rs.Fields("Resposta").Value, rs.Fields("CountOfSexo").Value)
+                rs.MoveNext()
+            Loop
+            chartimage = New MemoryStream()
+            prepChart(chartimage, Chart_Image)
+            Document.Add(Chart_Image)
+        End If
+
+        rs.Close()
+
+
+
+        Series = New Series
+        clearChart(Series)
+        Chart1.Titles.Add("Feminino")
+        s = "SELECT tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblPessoas.Sexo, Count(tblPessoas.Sexo) AS CountOfSexo
+FROM (tblPessoas INNER JOIN tblEnquete ON tblPessoas.ID = tblEnquete.ID_Paciente) INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete
+GROUP BY tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblPessoas.Sexo, tblEnqueteRespostas.ID_Questao
+HAVING (((tblPessoas.Sexo)='Feminino') AND ((tblEnqueteRespostas.ID_Questao)=2))"
+
+        retval = getRS(s, rs, False, serro)
+        If retval Then
+            Do While Not rs.EOF
+
+                Chart1.Series("Series1").Points.AddXY(rs.Fields("Resposta").Value, rs.Fields("CountOfSexo").Value)
+                rs.MoveNext()
+            Loop
+            chartimage = New MemoryStream()
+            prepChart(chartimage, Chart_Image)
+            Document.Add(Chart_Image)
+        End If
+
+
+        rs.Close()
+
+        Series = New Series
+        clearChart(Series)
+
+        s = "SELECT tblEnqueteRespostas.ID_Questao, Count(tblPessoas.Sexo) AS CountOfSexo, tblPessoas.Sexo, First(tblEnqueteRespostas.Questao) AS FirstOfQuestao
+FROM tblPessoas INNER JOIN (tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete) ON tblPessoas.ID = tblEnquete.ID_Paciente
+GROUP BY tblEnqueteRespostas.ID_Questao, tblPessoas.Sexo
+HAVING (((tblEnqueteRespostas.ID_Questao)=2))"
+        retval = getRS(s, rs, False, serro)
+        If retval Then
+            Do While Not rs.EOF
+
+                Chart1.Series("Series1").Points.AddXY(rs.Fields("Sexo").Value, rs.Fields("CountOfSexo").Value)
+                rs.MoveNext()
+            Loop
+
+            chartimage = New MemoryStream()
+            prepChart(chartimage, Chart_Image)
+            Document.Add(Chart_Image)
+        End If
+        Document.Close()
+        pdfWrite.Close()
+    End Sub
+    Function clearChart(series As Series) As Boolean
+        Chart1.Series.Clear()
+        Chart1.Titles.Clear()
+        Chart1.Series.Add(series)
+        series.ChartType = SeriesChartType.Pie
+        series.IsValueShownAsLabel = True
+    End Function
+    Function prepChart(chartimage As MemoryStream, ByRef chart_Image As iTextSharp.text.Image) As Boolean
+        Chart1.SaveImage(chartimage, ChartImageFormat.Png)
+        chart_Image = iTextSharp.text.Image.GetInstance(chartimage.GetBuffer())
+        chart_Image.ScalePercent(100.0F)
+    End Function
+
+    Private Sub Cmd2Tables_Click(sender As Object, e As EventArgs) Handles cmd2Tables.Click
+        Dim paragraph As New Paragraph
+        Dim Document As New Document(PageSize.A4, 40, 40, 40, 20)
+
+        Dim pdfWrite As PdfWriter = PdfWriter.GetInstance(Document, New FileStream("SideBySide.pdf", FileMode.Create))
+
+        Document.Open()
+        Dim pTitle As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK)
+        Dim pHeader As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLDITALIC, BaseColor.BLACK)
+        Dim pTable As New Font(iTextSharp.text.Font.FontFamily.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK)
+        paragraph = New Paragraph(New Chunk("Relatorio", pTitle))
+
+        Dim Table As New PdfPTable(gridQuestionario.Columns.Count)
+        Table.TotalWidth = 144.0F
+        Table.LockedWidth = True
+
+        Dim widths(0 To gridQuestionario.Columns.Count - 1) As Single
+        For i As Integer = 0 To gridQuestionario.Columns.Count - 1
+            widths(i) = 1.0F
+        Next
+
+        Table.SetWidths(widths)
+        Table.HorizontalAlignment = 0
+        Table.SpacingBefore = 5.0F
+
+        'declaration pdf cells
+        Dim pdfCell As PdfPCell = New PdfPCell
+
+        'create header
+        For i As Integer = 0 To gridQuestionario.Columns.Count - 1
+            pdfCell = New PdfPCell(New Phrase(New Chunk(gridQuestionario.Columns(i).HeaderText, pHeader)))
+            'alignment header table
+            pdfCell.HorizontalAlignment = PdfPCell.ALIGN_LEFT
+
+            'Add cells into pdf table
+            Table.AddCell(pdfCell)
+        Next
+
+        'add data into pdf table
+        For i As Integer = 0 To gridQuestionario.Rows.Count - 2
+            For j As Integer = 0 To gridQuestionario.Columns.Count - 1
+
+                pdfCell = New PdfPCell(New Phrase(gridQuestionario(j, i).FormattedValue.ToString(), pTable))
+                pdfCell.HorizontalAlignment = 1
+                Table.AddCell(pdfCell)
+            Next
+        Next
+
+
+        Dim intTblWidth() As Integer = {20, 30, 25}
+        Table.SetWidths(intTblWidth)
+        Table.WidthPercentage = 50
+        Table.WriteSelectedRows(0, -1, Document.Left, Document.Top, pdfWrite.DirectContent)
+        ' Document.Add(Table)
+
+
+
+        Table.TotalWidth = 144.0F
+        Table.LockedWidth = True
+        Table.WriteSelectedRows(0, -1, Document.Left + 200, Document.Top, pdfWrite.DirectContent)
+        ' Document.Add(Table)
+
+        Document.Close()
+        pdfWrite.Close()
+    End Sub
+    Function prepRetChart(rs As ADODB.Recordset, ByRef s As String, sErro As String, ByRef retval As Boolean, chartimage As MemoryStream, ByRef chart_Image As iTextSharp.text.Image) As Boolean
+
+        retval = getRS(s, rs, False, sErro)
+        If retval Then
+            Do While Not rs.EOF
+                Chart1.Series("Series1").Points.AddXY(rs.Fields("Resposta").Value, rs.Fields("CountOfResposta").Value)
+                rs.MoveNext()
+            Loop
+            Chart1.SaveImage(chartimage, ChartImageFormat.Png)
+            chart_Image = iTextSharp.text.Image.GetInstance(chartimage.GetBuffer())
+            chart_Image.ScalePercent(100.0F)
+
+        End If
+
+    End Function
 
 
 End Class

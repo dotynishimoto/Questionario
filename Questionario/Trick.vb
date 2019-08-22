@@ -15,6 +15,7 @@ Public Enum crudGrid
     gridPessoas = 3
     gridEnquete = 4
     gridUpdateGrupo = 5
+    gridListPerguntas = 6
 End Enum
 
 Public Enum enumfldType

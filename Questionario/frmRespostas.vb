@@ -8,7 +8,11 @@ Public Class frmRespostas
     Dim somestring2() As String
 
     Private Sub Respostas_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        s = "SELECT rrQuestionarioGrupo.ID_Questionario, tblGrupoQuestoes.Titulo, tblQuestoes.Questao, rrGrupoQuestao.Ordem, tblQuestoes.ID, tblQuestoes.Tipo, tblQuestoes.Respostas
+        's = "SELECT rrQuestionarioGrupo.ID_Questionario, tblGrupoQuestoes.Titulo, tblQuestoes.Questao, rrGrupoQuestao.Ordem, tblQuestoes.ID, tblQuestoes.Tipo, tblQuestoes.Respostas
+        'FROM tblQuestoes INNER JOIN ((tblGrupoQuestoes INNER JOIN rrQuestionarioGrupo ON tblGrupoQuestoes.ID = rrQuestionarioGrupo.ID_Grupo) INNER JOIN rrGrupoQuestao ON tblGrupoQuestoes.ID = rrGrupoQuestao.ID_Grupo) ON tblQuestoes.ID = rrGrupoQuestao.ID_Questao
+        ' WHERE rrQuestionarioGrupo.ID_Questionario=" & Val(Trim(lblIDQuestionario.Text)) & ""
+
+        s = "SELECT rrQuestionarioGrupo.ID_Questionario, tblGrupoQuestoes.Titulo, tblQuestoes.Questao, rrGrupoQuestao.Ordem, tblQuestoes.ID, tblQuestoes.Tipo, tblQuestoes.Respostas, rrGrupoQuestao.ID_Grupo
 FROM tblQuestoes INNER JOIN ((tblGrupoQuestoes INNER JOIN rrQuestionarioGrupo ON tblGrupoQuestoes.ID = rrQuestionarioGrupo.ID_Grupo) INNER JOIN rrGrupoQuestao ON tblGrupoQuestoes.ID = rrGrupoQuestao.ID_Grupo) ON tblQuestoes.ID = rrGrupoQuestao.ID_Questao
          WHERE rrQuestionarioGrupo.ID_Questionario=" & Val(Trim(lblIDQuestionario.Text)) & ""
 
@@ -39,6 +43,7 @@ FROM tblQuestoes INNER JOIN ((tblGrupoQuestoes INNER JOIN rrQuestionarioGrupo ON
         If retVal Then
             lblPergunta.Visible = True
             lblGrupo.Visible = True
+            lblIDGrupo.Text = rs.Fields("ID_Grupo").Value
             lblIDPergunta.Text = rs.Fields("ID").Value
             lblIDQuestionario.Text = rs.Fields("ID_Questionario").Value
             lblIDOrdem.Text = rs.Fields("Ordem").Value
@@ -132,8 +137,11 @@ FROM tblQuestoes INNER JOIN ((tblGrupoQuestoes INNER JOIN rrQuestionarioGrupo ON
     Private Sub BtnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim rs As New ADODB.Recordset
 
-        s = "SELECT tblEnquete.ID, tblEnquete.IDQuestionario, tblEnquete.ID_Paciente, tblEnquete.Data_Dia, tblEnqueteRespostas.ID_Enquete, tblEnqueteRespostas.ID_Questionario, tblEnqueteRespostas.ID_Ordem_Questao, tblEnqueteRespostas.ID_Questao, tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblEnqueteRespostas.ID_Respondente, tblEnquete.IDRespondente
-FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete;"
+        '  s = "SELECT tblEnquete.ID, tblEnquete.IDQuestionario, tblEnquete.ID_Paciente, tblEnquete.Data_Dia, tblEnqueteRespostas.ID_Enquete, tblEnqueteRespostas.ID_Questionario, tblEnqueteRespostas.ID_Ordem_Questao, tblEnqueteRespostas.ID_Questao, tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblEnqueteRespostas.ID_Respondente, tblEnquete.IDRespondente
+        'FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete;"
+
+        s = "SELECT tblEnquete.ID, tblEnquete.IDQuestionario, tblEnquete.ID_Paciente, tblEnquete.Data_Dia, tblEnqueteRespostas.ID_Enquete, tblEnqueteRespostas.ID_Questionario, tblEnqueteRespostas.ID_Ordem_Questao, tblEnqueteRespostas.ID_Questao, tblEnqueteRespostas.Questao, tblEnqueteRespostas.Resposta, tblEnqueteRespostas.ID_Respondente, tblEnquete.IDRespondente, tblEnqueteRespostas.ID_Grupo
+FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteRespostas.ID_Enquete"
         retVal = getRS(s, rs, False, sErro)
 
         If retVal Then
@@ -168,6 +176,7 @@ FROM tblEnquete INNER JOIN tblEnqueteRespostas ON tblEnquete.ID = tblEnqueteResp
                 ElseIf lblTipo.Text = "m" Then
                     rs.Fields("Resposta").Value = check.ValueMember
                 End If
+                rs.Fields("ID_Grupo").Value = lblIDGrupo.Text
                 rs.Update()
                 rs.Close()
 
