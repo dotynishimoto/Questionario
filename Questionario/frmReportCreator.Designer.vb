@@ -28,17 +28,19 @@ Partial Class frmReportCreator
         '
         'NumericUpDown1
         '
-        Me.NumericUpDown1.Location = New System.Drawing.Point(605, 39)
+        Me.NumericUpDown1.Location = New System.Drawing.Point(454, 37)
+        Me.NumericUpDown1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(120, 22)
+        Me.NumericUpDown1.Size = New System.Drawing.Size(90, 20)
         Me.NumericUpDown1.TabIndex = 0
         '
         'frmReportCreator
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(600, 366)
         Me.Controls.Add(Me.NumericUpDown1)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "frmReportCreator"
         Me.Text = "g"
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
