@@ -18,7 +18,7 @@
         Catch ex As Exception
 
             Throw ex
-
+            'Primeir commit
         End Try
 
         frmReport.Show()
